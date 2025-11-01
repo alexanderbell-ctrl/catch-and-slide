@@ -1,0 +1,126 @@
+Introductions
+init():
+set background image to white
+create ‘instructions’ w/ text’
+set instructions size to (500,300), position to center of window
+
+create btnPlay, set text “Play”, set position (100, 800)
+create btnQuit, set text “Quit”, set position (100,400)
+
+{lblInstructions, btnPlay, btnQuit}
+
+process():
+if quit pressed:
+  set response to “quit”
+  stop scene
+if start pressed:
+  set response to “start”
+  stop scene
+
+
+
+Game
+init():
+set background image to black
+create timer & set to 15
+set score to 0
+create instance of Ship (ship)
+create list of 3 Asteroid instances (asteroids)
+
+create instance of FuelCell (fuel-cell)
+create instance of LblScore (lblScore)
+create instance of Lbltime (lblTime)
+
+process():
+  for each coin in list:
+    if collides w/ ship:
+      reset coin
+      score + 1
+update time
+if time < 0:
+  print score
+  stop game
+
+
+
+
+Ship
+init():
+set color to yellow, size to 50x50
+position to (320,400)
+set moveSpeed to 7
+
+process():
+if left key pressed:
+  x-moveSpeed
+if right key pressed:
+  x+moveSpeed
+
+
+
+
+Asteroid
+init():
+Set color gray, size to 25x25
+call reset()
+
+reset():
+set y to 15
+set x to random 0-screen width
+set dy to random between 4-10
+
+checkBounds():
+if y > screen:
+  call reset()
+
+
+
+
+FuelCell
+init():
+Set color green, size to 20x20
+call reset()
+
+reset():
+reset():
+set y to 15
+set x to random 0-screen width
+set dy to random between 8-15
+
+checkBounds():
+if y > screen:
+  call reset()
+
+
+
+
+Lblscore
+init():
+text → “SCORE: 0”
+set center to (100,30)
+
+
+
+Lbltime
+init():
+text → “TIME LEFT: 15”
+set center to (100,60)
+
+
+
+main():
+keepGoing
+score is 0
+while keepGoing:
+	instance of Introductions (instructions)
+	start instructions
+	when ends:
+		if response if "play"
+			create instance of Game (game)
+			start game
+			when over
+		else:
+			exit game
+
+
+
