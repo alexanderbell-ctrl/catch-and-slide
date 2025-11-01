@@ -68,19 +68,19 @@ class Game(simpleGE.Scene):
 
         self.sprites = [
         self.lblTime,
-        self.asteroid,
         self.lblScore,
         self.ship,
         self.fuelcell
-        ]
+        ] + self.asteroids
+
     def process(self):
         for asteroid in self.asteroids:
             if asteroid.collidesWith(self.ship):
                 asteroid.reset()
                 self.score -= 1
                 self.lblScore.text = f"SCORE {self.score}"
-        if fuelcell.collidesWith(self.ship):
-                asteroid.reset()
+        if self.fuelcell.collidesWith(self.ship):
+                self.fuelcell.reset()
                 self.score += 1
                 self.lblScore.text = f"SCORE {self.score}"
         self.lblTime.text = f"TIME LEFT: {self.timer.getTimeLeft()}"
@@ -139,9 +139,7 @@ class FuelCell(simpleGE.Sprite):
     def checkBounds(self):
         if self.bottom > self.screenHeight:
             self.reset()
-
-    
-
+ 
 
 
 class LblScore(simpleGE.Label):
