@@ -22,7 +22,7 @@ class Introductions(simpleGE.Scene):
         "Avoid asteroids (gray) and hit fuel cells (blue & red)"
         ]
         self.directions.center = (320,200)
-        self.directions.size = (500,200)
+        self.directions.size = (550,200)
 
         self.btnPlay = simpleGE.Button()
         self.btnPlay.text = "Start"
@@ -60,10 +60,10 @@ class Game(simpleGE.Scene):
         self.setImage("black.png")
 
         self.timer = simpleGE.Timer()
-        self.timer.totalTime = 15
-        self.lblTime = LblTime()
+        self.timer.totalTime = 30
+        self.lblTime = LblTime() 
 
-        self.numAsteroids = 6
+        self.numAsteroids = 4
         self.score = 0
         self.lblScore = LblScore()
 
@@ -92,7 +92,8 @@ class Game(simpleGE.Scene):
                 self.fuelcell.reset()
                 self.score += 1
                 self.lblScore.text = f"SCORE {self.score}"
-        self.lblTime.text = f"TIME LEFT: {self.timer.getTimeLeft()}"
+#                self.timer += 300
+        self.lblTime.text = f"Time Left: {self.timer.getTimeLeft():.1f}"
         if self.timer.getTimeLeft() < 0:
             print(f"SCORE: {self.score}")
             self.stop()
@@ -161,8 +162,10 @@ class LblScore(simpleGE.Label):
 class LblTime(simpleGE.Label):
     def __init__(self):
         super().__init__()
-        self.text = "TIME LEFT: 15"
+        self.text = "TIME LEFT: 30"
         self.center = (500,30)
+#        self.size = (200,200)
+#        self.bgColor = "red"
 
 
 
