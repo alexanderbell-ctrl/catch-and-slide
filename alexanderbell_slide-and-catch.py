@@ -1,14 +1,16 @@
 '''
 Alexander Bell
 2D game where the player dodges certain obstacles, and hitting others
-Oct-31
+Nov-07
 '''
 import pygame, simpleGE, random
 
 
 class Introductions(simpleGE.Scene):
-    def __init__(self):
+    def __init__(self,score=0):
         super().__init__()
+
+        self.score = score 
 
         self.setImage("white.png")
         self.response = "Quit"
@@ -17,10 +19,10 @@ class Introductions(simpleGE.Scene):
         self.directions.textLines = [
         "You are the pilot of a small spacecraft.",
         "Move left and right using the arrow keys.",
-        "Avoid asteroids (gray) and hit fuel cells (green)"
+        "Avoid asteroids (gray) and hit fuel cells (blue & red)"
         ]
         self.directions.center = (320,200)
-        self.directions.size = (500,300)
+        self.directions.size = (500,200)
 
         self.btnPlay = simpleGE.Button()
         self.btnPlay.text = "Start"
@@ -30,10 +32,17 @@ class Introductions(simpleGE.Scene):
         self.btnQuit.text = "Quit"
         self.btnQuit.center = (540,400)
 
+        self.lblScore = simpleGE.Label()
+        self.lblScore.center = (320,400)
+        self.lblScore.size = (275,50)
+        self.lblScore.text = f"Previous Score: {self.score}"
+        self.lblScore.bgColor = "black"
+
         self.sprites = [
         self.directions,
         self.btnPlay,
-        self.btnQuit
+        self.btnQuit,
+        self.lblScore
         ]
     def process(self):
         if self.btnPlay.clicked:
@@ -54,7 +63,7 @@ class Game(simpleGE.Scene):
         self.timer.totalTime = 15
         self.lblTime = LblTime()
 
-        self.numAsteroids = 3
+        self.numAsteroids = 6
         self.score = 0
         self.lblScore = LblScore()
 
@@ -91,8 +100,8 @@ class Game(simpleGE.Scene):
 class Ship(simpleGE.Sprite):
     def __init__(self,scene):
         super().__init__(scene)
-        self.setImage("ship.jpg")
-        self.setSize(50,50)
+        self.setImage("ship.png")
+        self.setSize(50,100)
         self.position = (320,400)
         self.moveSpeed = 7
 
@@ -105,8 +114,8 @@ class Ship(simpleGE.Sprite):
 class Asteroid(simpleGE.Sprite):
     def __init__(self,scene):
         super().__init__(scene)
-        self.setImage("asteroid.jpg")
-        self.setSize(25,25)
+        self.setImage("asteroid.png")
+        self.setSize(50,50)
         self.minSpeed = 4
         self.maxSpeed = 10
         self.reset()
@@ -125,10 +134,10 @@ class Asteroid(simpleGE.Sprite):
 class FuelCell(simpleGE.Sprite):
     def __init__(self,scene):
         super().__init__(scene)
-        self.setImage("fuelcell.jpg")
-        self.setSize(20,20)
-        self.minSpeed = 8
-        self.maxSpeed = 15
+        self.setImage("fuel_cell.png")
+        self.setSize(30,30)
+        self.minSpeed = 4
+        self.maxSpeed = 6
         self.reset()
 
     def reset(self):
@@ -159,14 +168,15 @@ class LblTime(simpleGE.Label):
 
 def main():
     keepGoing = True
-    score = 0
+    lastScore = 0
     while keepGoing:
-        instructions = Introductions()
+        instructions = Introductions(lastScore)
         instructions.start()
 
         if instructions.response == "play":
             game = Game()
             game.start()
+            lastScore = game.score
         else:
             keepGoing = False
 if __name__ == "__main__":
